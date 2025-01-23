@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-n$$g_drh)_fx7a&%qj%5@y6&7d0($+o8dqc68fa%i#=a$a3(vb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','localhost','*']
 
 
 # Application definition
@@ -127,7 +127,7 @@ MEDIA_URL = 'uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 STATIC_URL = '/static/'
-STAATICFILES_DIRS = [
+STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
 # Default primary key field type

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -9,7 +9,9 @@ from .forms import CustomSigninForm, CustomSignupForm
 from datetime import datetime
 
 def index(request):
-	return render(request, 'index.html')
+	if request.user.is_authenticated:
+		return render(request, 'admin/index.html')
+	return HttpResponseRedirect(reverse('signin'))
 
 def signin(request):
 	context = {
@@ -29,7 +31,7 @@ def signin(request):
 	else:
 		form = CustomSigninForm()
 	context['form'] = form
-	return render(request, 'signin.html', context)
+	return render(request, 'account/signin.html', context)
 
 def signup(request):
 	form = CustomSignupForm()
@@ -58,5 +60,9 @@ def signup(request):
 		else:
 			messages.error(request, "Pendaftaran Gagal, Pastikan lagi Inputannya.")
 
-	return render(request, 'signup.html', {'form':form, 'context':context})
+	return render(request, 'account/signup.html', {'form':form, 'context':context})
 
+def signout(request):
+	if request.user.is_authenticated:
+		logout(request)
+	return HttpResponseRedirect(reverse('signin'))
