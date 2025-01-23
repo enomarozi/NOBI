@@ -62,6 +62,9 @@ def signup(request):
 
 	return render(request, 'account/signup.html', {'form':form, 'context':context})
 
+def setting(request):
+	return render(request, 'account/setting.html')
+	
 def signout(request):
 	if request.user.is_authenticated:
 		logout(request)
