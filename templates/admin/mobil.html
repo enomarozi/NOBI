@@ -1,4 +1,79 @@
 {% load static %}
 {% include 'admin/components/header.html' %}
   {% include 'admin/components/sidebar.html' %}
+  <style type="text/css">
+    .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 75%; 
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+  </style>
+  <section class="section">
+      <div class="section-header">
+        <h1>Kelola Mobil</h1>
+      </div>
+      <button id="buttonTambah" type="button" class="btn btn-primary">Tambah Mobil</button>
+
+      <div id="modalTambah" class="modal">
+        <div class="modal-content">
+            <span class="close" id='closeModal'>&times;</span>
+            <form method="POST" action="{% url 'addCar' %}">
+              {% csrf_token %}
+                <div class="mb-1">
+                  {{ form.as_p }}
+                </div>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+      </div>
+
+      <script type="text/javascript">
+        var buttonTambah = document.getElementById('buttonTambah');
+        var modalTambah = document.getElementById('modalTambah');
+        var closeButton = document.getElementById('closeModal');
+
+        buttonTambah.onclick = function(){
+          modalTambah.style.display = "block";
+        }
+
+        closeButton.onclick = function(){
+          modalTambah.style.display = "none";
+        }
+
+        window.onclick = function(event){
+          if(event.target === modalTambah){
+            modalTambah.style.display = "none";
+          }
+        }
+      </script>
+
+  </section>
+
 {% include 'admin/components/footer.html' %}
