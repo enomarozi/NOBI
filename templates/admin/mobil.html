@@ -13,18 +13,10 @@
         background-color: rgba(0, 0, 0, 0.4);
     }
 
-    .modal-content {
-        background-color: #fff;
-        margin: 10% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 75%; 
-    }
-
     .close {
         color: #aaa;
         float: right;
-        font-size: 28px;
+        font-size: 30px;
         font-weight: bold;
     }
 
@@ -36,21 +28,70 @@
     }
   </style>
   <section class="section">
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Memuat DataTables CSS -->
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <!-- Memuat DataTables JS -->
+      <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
       <div class="section-header">
         <h1>Kelola Mobil</h1>
       </div>
-      <button id="buttonTambah" type="button" class="btn btn-primary">Tambah Mobil</button>
 
+      <h2>Mobil List</h2>
+      <table id="employeeTable" class="display">
+          <thead>
+              <tr>
+                  <th>ID</th>
+                  <th>Merek</th>
+                  <th>Kapasitas</th>
+                  <th>Durasi</th>
+                  <th>Harga</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody>
+              <!-- Data will be filled by JavaScript -->
+          </tbody>
+      </table>
+      <script>
+        $(document).ready(function() {
+            $('#employeeTable').DataTable({
+                "ajax": {
+                    "url": "{% url 'getMobil' %}",  // Ganti dengan URL kamu
+                    "dataSrc": ""
+                },
+                "columns": [
+                    { "data": "id" },
+                    { "data": "merek" },
+                    { "data": "kapasitas" },
+                    { "data": "durasi" },
+                    { "data": "harga" },
+                    { "data": "action" }
+                ]
+            });
+        });
+      </script>
+
+      <button id="buttonTambah" type="button" class="btn btn-primary">Tambah Mobil</button>
       <div id="modalTambah" class="modal">
-        <div class="modal-content">
-            <span class="close" id='closeModal'>&times;</span>
-            <form method="POST" action="{% url 'addCar' %}">
-              {% csrf_token %}
-                <div class="mb-1">
-                  {{ form.as_p }}
-                </div>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+        <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                <h3 class="modal-title">Tambah Mobil</h3>
+                <span class="close" id='closeModal'>&times;</span>
+              </div>
+              <div class="modal-body">
+                <form method="POST" action="{% url 'mobil' %}">
+                  {% csrf_token %}
+                    <div class="mb-1">
+                      {{ form.as_p }}
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+          </div>
         </div>
       </div>
 
