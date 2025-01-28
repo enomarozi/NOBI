@@ -5,8 +5,8 @@ from django.contrib.auth.models import User
 class CustomSigninForm(AuthenticationForm):
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
-		self.fields["username"].widget.attrs.update({"class":"form-control","max-length":30,"required":True})
-		self.fields["password"].widget.attrs.update({"class":"form-control","max-length":30,"required":True})
+		self.fields["username"].widget.attrs.update({"class":"form-control","max-length":30,"value":"administrator","required":True})
+		self.fields["password"].widget.attrs.update({"class":"form-control","max-length":30,"value":"12345678","required":True})
 
 
 class CustomSignupForm(forms.ModelForm):

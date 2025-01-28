@@ -12,11 +12,10 @@
         height: 100%;
         background-color: rgba(0, 0, 0, 0.4);
     }
-
     .close {
         color: #aaa;
         float: right;
-        font-size: 30px;
+        font-size: 38px;
         font-weight: bold;
     }
 
@@ -28,17 +27,15 @@
     }
   </style>
   <section class="section">
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Memuat DataTables CSS -->
-      <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
-    <!-- Memuat DataTables JS -->
-      <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+      <link rel="stylesheet" href="https://cdn.datatables.net/1.13.11/css/jquery.dataTables.min.css">
+      <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+      <script src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js"></script>
       <div class="section-header">
         <h1>Kelola Mobil</h1>
       </div>
-
+      <button onClick="buttonTambah()" type="button" class="btn btn-primary">Tambah Mobil</button>
       <h2>Mobil List</h2>
-      <table id="employeeTable" class="display">
+      <table id="mobil" class="display">
           <thead>
               <tr>
                   <th>ID</th>
@@ -49,68 +46,136 @@
                   <th>Action</th>
               </tr>
           </thead>
-          <tbody>
-              <!-- Data will be filled by JavaScript -->
+          <tbody id="tbodymobil">
           </tbody>
       </table>
+
       <script>
-        $(document).ready(function() {
-            $('#employeeTable').DataTable({
-                "ajax": {
-                    "url": "{% url 'getMobil' %}",  // Ganti dengan URL kamu
-                    "dataSrc": ""
-                },
-                "columns": [
-                    { "data": "id" },
-                    { "data": "merek" },
-                    { "data": "kapasitas" },
-                    { "data": "durasi" },
-                    { "data": "harga" },
-                    { "data": "action" }
-                ]
+        document.addEventListener("DOMContentLoaded", function(){
+          fetch('{% url "getMobil" %}')
+          .then(response => response.json())
+          .then(data => {
+            const tbody = document.getElementById("tbodymobil");
+            tbody.innerHTML = '';
+            let autoIncrement = 1;
+            data.forEach(menu =>{
+              const row = document.createElement('tr');
+              const noCell = document.createElement('td');
+              noCell.textContent += autoIncrement;
+              row.appendChild(noCell);
+              autoIncrement++;
+
+              const merekCell = document.createElement('td');
+              merekCell.textContent = menu.merek;
+              row.appendChild(merekCell);
+
+              const kapasitasCell = document.createElement('td');
+              kapasitasCell.textContent = menu.kapasitas;
+              row.appendChild(kapasitasCell);
+
+              const durasiCell = document.createElement('td');
+              durasiCell.textContent = menu.durasi;
+              row.appendChild(durasiCell);
+
+              const hargaCell = document.createElement('td');
+              hargaCell.textContent = menu.harga;
+              row.appendChild(hargaCell);
+
+              const actionCell = document.createElement('td');
+              actionCell.innerHTML = `
+                <button onClick='modalEdit(${menu.merek},"${menu.merek}",${menu.kapasitas}, "${menu.durasi}",${menu.harga})' class="btn btn-xs btn-success">Edit</button>
+                <button onClick='modalDelete(${menu.id})' class="btn btn-xs btn-danger">Delete</button>
+
+              `
+              row.appendChild(actionCell);
+              tbody.appendChild(row);
             });
+            $('#mobil').DataTable();
+          });
         });
       </script>
 
-      <button id="buttonTambah" type="button" class="btn btn-primary">Tambah Mobil</button>
       <div id="modalTambah" class="modal">
         <div class="modal-dialog">
           <div class="modal-content">
               <div class="modal-header">
-                <h3 class="modal-title">Tambah Mobil</h3>
-                <span class="close" id='closeModal'>&times;</span>
+                <h3 class="modal-title" id="titleModal"></h3>
+                <span class="close" style="cursor: pointer;">&times;</span>
               </div>
               <div class="modal-body">
                 <form method="POST" action="{% url 'mobil' %}">
                   {% csrf_token %}
                     <div class="mb-1">
+                      <input type="hidden" id='id_' name="id" value="">
                       {{ form.as_p }}
                     </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary">Submit</button>
+                      <button type="submit" class="btn btn-primary" id="submit_">Submit</button>
                     </div>
                 </form>
           </div>
         </div>
       </div>
 
+      <div id="modalHapus" class="modal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h3 class="modal-title">Delete Mobil</h3>
+              <span class="close" style="cursor: pointer;">&times;</span>
+            </div>
+            <div class="modal-body">
+              <p id='text'></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <script type="text/javascript">
-        var buttonTambah = document.getElementById('buttonTambah');
-        var modalTambah = document.getElementById('modalTambah');
-        var closeButton = document.getElementById('closeModal');
+        function buttonTambah(){
+          document.getElementById('id_').value = '';
+          document.getElementById('id_merek').value = '';
+          document.getElementById('id_kapasitas').value = '';
+          document.getElementById('id_durasi').value = ''
+          document.getElementById('id_harga').value = '';
 
-        buttonTambah.onclick = function(){
+          const btnSubmit = document.getElementById('submit_');
+          btnSubmit.textContent = "Save";
+          btnSubmit.value = "SAVE";
+
+          const btnClose = document.getElementsByClassName('close')[0];
+          const modalTambah = document.getElementById('modalTambah');
           modalTambah.style.display = "block";
-        }
 
-        closeButton.onclick = function(){
-          modalTambah.style.display = "none";
-        }
-
-        window.onclick = function(event){
-          if(event.target === modalTambah){
+          const titleModal = document.getElementById('titleModal');
+          titleModal.textContent = "Tambah Mobil";
+      
+          btnClose.onclick = function(){
             modalTambah.style.display = "none";
+          }
+        }
+
+        function modalEdit(id, merek, kapasitas, durasi, harga){
+          document.getElementById('id_').value = id;
+          document.getElementById('id_merek').value = merek;
+          document.getElementById('id_kapasitas').value = kapasitas;
+          document.getElementById('id_durasi').value = durasi;
+          document.getElementById('id_harga').value = harga;
+
+          const btnSubmit = document.getElementById('submit_');
+          btnSubmit.textContent = "Update";
+          btnSubmit.value = "UPDATE";
+
+          const btnClose = document.getElementsByClassName('close')[0];
+          const modalEdit = document.getElementById('modalTambah');
+          modalEdit.style.display = "block";
+
+          const titleModal = document.getElementById('titleModal');
+          titleModal.textContent = "Edit Mobil";
+
+          btnClose.onclick = function(){
+            modalEdit.style.display = "none";
           }
         }
       </script>
