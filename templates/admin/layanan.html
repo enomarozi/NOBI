@@ -31,27 +31,25 @@
       <script src="https://cdn.datatables.net/2.2.1/js/dataTables.min.js"></script>
 
       <div class="section-header">
-        <h1>Kelola Mobil</h1>
+        <h1>Kelola Layanan</h1>
       </div>
-      <button onClick="buttonTambah()" type="button" class="btn btn-primary">Tambah Mobil</button>
+      <button onClick="buttonTambah()" type="button" class="btn btn-primary">Tambah Layanan</button>
       <div class='mt-4'>
         <div class="card shadow-lg">
           <div class="card-header text-center">
-            <h2 class="fw-bold text-center d-flex flex-column align-items-center mt-4">Mobil List</h2>
+            <h2 class="fw-bold text-center d-flex flex-column align-items-center mt-4">Layanan List</h2>
           </div>
           <div class="card-body">
-            <table id="mobil" class="display">
+            <table id="layanan" class="display">
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>Merek</th>
-                        <th>Kapasitas</th>
-                        <th>Durasi</th>
-                        <th>Harga</th>
+                        <th>Judul</th>
+                        <th>Kontent</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="tbodymobil">
+                <tbody id="tbodylayanan">
                 </tbody>
             </table>
           </div>
@@ -59,10 +57,10 @@
       </div>
       <script>
         document.addEventListener("DOMContentLoaded", function(){
-          fetch('{% url "getMobil" %}')
+          fetch('{% url "getLayanan" %}')
           .then(response => response.json())
           .then(data => {
-            const tbody = document.getElementById("tbodymobil");
+            const tbody = document.getElementById("tbodylayanan");
             tbody.innerHTML = '';
             let autoIncrement = 1;
             data.forEach(menu =>{
@@ -72,32 +70,24 @@
               row.appendChild(noCell);
               autoIncrement++;
 
-              const merekCell = document.createElement('td');
-              merekCell.textContent = menu.merek;
-              row.appendChild(merekCell);
+              const titleCell = document.createElement('td');
+              titleCell.textContent = menu.title;
+              row.appendChild(titleCell);
 
-              const kapasitasCell = document.createElement('td');
-              kapasitasCell.textContent = menu.kapasitas;
-              row.appendChild(kapasitasCell);
-
-              const durasiCell = document.createElement('td');
-              durasiCell.textContent = menu.durasi;
-              row.appendChild(durasiCell);
-
-              const hargaCell = document.createElement('td');
-              hargaCell.textContent = menu.harga;
-              row.appendChild(hargaCell);
+              const contentCell = document.createElement('td');
+              contentCell.textContent = menu.content;
+              row.appendChild(contentCell);
 
               const actionCell = document.createElement('td');
               actionCell.innerHTML = `
-                <button onClick='modalEdit(${menu.id},"${menu.merek}",${menu.kapasitas},"${menu.durasi}",${menu.harga})' class="btn btn-xs btn-success">Edit</button>
-                <button onClick='modalDelete(${menu.id},"${menu.merek}")' class="btn btn-xs btn-danger">Delete</button>
+                <button onClick='modalEdit(${menu.id},"${menu.title}","${menu.content}")' class="btn btn-xs btn-success">Edit</button>
+                <button onClick='modalDelete(${menu.id},"${menu.title}")' class="btn btn-xs btn-danger">Delete</button>
 
               `
               row.appendChild(actionCell);
               tbody.appendChild(row);
             });
-            $('#mobil').DataTable();
+            $('#layanan').DataTable();
           });
         });
       </script>
@@ -110,7 +100,7 @@
                 <span class="close" style="cursor: pointer;">&times;</span>
               </div>
               <div class="modal-body">
-                <form method="POST" action="{% url 'mobil' %}">
+                <form method="POST" action="{% url 'layanan' %}">
                   {% csrf_token %}
                     <div class="mb-1">
                       <input type="hidden" id='id_' name="id" value="">
@@ -130,13 +120,13 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h3 class="modal-title">Delete Mobil</h3>
+              <h3 class="modal-title">Delete Layanan</h3>
               <span class="close" style="cursor: pointer;">&times;</span>
             </div>
             <div class="modal-body">
               <p id='text-delete' class="text-center"></p>
             </div>
-            <form method="POST" action="{% url 'mobil' %}">
+            <form method="POST" action="{% url 'layanan' %}">
               {% csrf_token %}
               <input type="hidden" id='id_del' name="id" value="">
               <input type="hidden" id='id_action' name="action" value="Hapus">
@@ -151,10 +141,8 @@
       <script type="text/javascript">
         function buttonTambah(){
           document.getElementById('id_').value = '';
-          document.getElementById('id_merek').value = '';
-          document.getElementById('id_kapasitas').value = '';
-          document.getElementById('id_durasi').value = ''
-          document.getElementById('id_harga').value = '';
+          document.getElementById('id_title').value = '';
+          document.getElementById('id_content').value = '';
           document.getElementById('id_action').value = 'Tambah';
 
           const btnSubmit = document.getElementById('submit_');
@@ -166,19 +154,17 @@
           modalTambah.style.display = "block";
 
           const titleModal = document.getElementById('titleModal');
-          titleModal.textContent = "Tambah Mobil";
+          titleModal.textContent = "Tambah Layanan";
       
           btnClose.onclick = function(){
             modalTambah.style.display = "none";
           }
         }
 
-        function modalEdit(id, merek, kapasitas, durasi, harga){
+        function modalEdit(id, title, content){
           document.getElementById('id_').value = id;
-          document.getElementById('id_merek').value = merek;
-          document.getElementById('id_kapasitas').value = kapasitas;
-          document.getElementById('id_durasi').value = durasi;
-          document.getElementById('id_harga').value = harga;
+          document.getElementById('id_title').value = title;
+          document.getElementById('id_content').value = content;
           document.getElementById('id_action').value = 'Edit';
 
           const btnSubmit = document.getElementById('submit_');
@@ -190,7 +176,7 @@
           modalEdit.style.display = "block";
 
           const titleModal = document.getElementById("titleModal");
-          titleModal.textContent = "Edit Mobil";
+          titleModal.textContent = "Edit Layanan";
 
           btnClose.onclick = function(){
             modalEdit.style.display = "none";
@@ -204,14 +190,12 @@
           const btnClose = document.getElementsByClassName("close")[1];
           const modalDelete = document.getElementById("modalHapus");
           modalDelete.style.display = "block";
-          text_delete.textContent = "Apakah Anda Ingin Menghapus Record Mobil "+merek;
+          text_delete.textContent = "Apakah Anda Ingin Menghapus Record Layanan "+merek;
 
           btnClose.onclick = function(){
             modalDelete.style.display = "none";
           }
         }
       </script>
-
-  </section>
 
 {% include 'admin/components/footer.html' %}

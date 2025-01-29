@@ -2,6 +2,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('',include('accounts.urls')),
+    path('admin/',include('dashboard.urls')),
     path('admin/',include('mobil.urls')),
-    path('admin/',include('artikel.urls')),
+    path('admin/',include('layanan.urls')),
 ]

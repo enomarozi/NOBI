@@ -1,17 +1,13 @@
 from django.shortcuts import render
 from django.urls import reverse
 from django.http import HttpResponseRedirect
+from django.db import connection
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import CustomSigninForm, CustomSignupForm
 from datetime import datetime
-
-def index(request):
-	if request.user.is_authenticated:
-		return render(request, 'admin/index.html')
-	return HttpResponseRedirect(reverse('signin'))
 
 def signin(request):
 	context = {
@@ -25,7 +21,7 @@ def signin(request):
 			user = authenticate(request, username=username, password=password)
 			if user is not None:
 				login(request, user)
-				return HttpResponseRedirect(reverse('index'))
+				return HttpResponseRedirect(reverse('dashboard'))
 		else:
 			messages.error(request, "SignIn Failed, Pastikan lagi Inputannya.")
 	else:
@@ -52,7 +48,7 @@ def signup(request):
 					user.password = make_password(password2)
 					user.save()
 					messages.success(request, "Pendaftaran Berhasil, Silakan Coba Masuk.")
-					return HttpResponseRedirect(reverse('index'))
+					return HttpResponseRedirect(reverse('dashboard'))
 				else:
 					message.error(request, "Pendaftaran Gagal", "Password Tidak Sama dengan Konfirmasi Password.")
 			else:
@@ -61,6 +57,13 @@ def signup(request):
 			messages.error(request, "Pendaftaran Gagal, Pastikan lagi Inputannya.")
 
 	return render(request, 'account/signup.html', {'form':form, 'context':context})
+
+def profile(request):
+	if request.user.is_authenticated:
+		auth = request.user.username
+		user = User.objects.get(username=auth)
+		return render(request, 'account/profile.html',{'user':user})
+	return HttpResponseRedirect(reverse('signin'))
 
 def setting(request):
 	return render(request, 'account/setting.html')

@@ -1,12 +1,17 @@
 {% load static %}
     </div>
     <footer class="main-footer">
-      <div class="footer-left">
-        Copyright &copy; Testing</a>
+      <div class="footer-left" id=copyright>
+        
       </div>
       <div class="footer-right">
       </div>
     </footer>
+    <script type="text/javascript">
+      const tahun = new Date().getFullYear();
+      const copyright = document.getElementById('copyright')
+      copyright.textContent = "Copyright \u00A9 Testing "+tahun;
+    </script>
   </div>
 </div>
 

@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class ArtikelConfig(AppConfig):
+class DashboardConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'artikel'
+    name = 'dashboard'

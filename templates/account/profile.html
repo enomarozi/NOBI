@@ -1,0 +1,36 @@
+{% load static %}
+{% include 'admin/components/header.html' %}
+  {% include 'admin/components/sidebar.html' %}
+  <style type="text/css">
+    .size-profile{
+      width: 100%;
+    }
+  </style>
+  <section class="section">
+    <div class="section-header">
+      <h1>Profile</h1>
+    </div>
+    <div class='size-profile'>
+      <div class="mb-3">
+        <label for="firstname" class="form-label">Firstname</label>
+        <input type="email" class="form-control" id="firstname" value="{{ user.first_name }}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="lastname" class="form-label">Lastname</label>
+        <input type="text" class="form-control" id="lastname" value="{{ user.last_name }}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input type="text" class="form-control" id="username" value="{{ user.username }}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" class="form-control" id="email" value="{{ user.email }}" readonly>
+      </div>
+      <div class="mb-3">
+        <label for="role" class="form-label">Role</label>
+        <input type="text" class="form-control" id="role" value="{{ user.is_superuser }}" readonly>
+      </div>
+    </div>
+  </section>
+{% include 'admin/components/footer.html' %}

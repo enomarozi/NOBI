@@ -13,4 +13,4 @@ class KelolaMobil(models.Model):
 	harga = models.IntegerField()
 
 	class Meta:
-		db_table = 'mobil'
+		db_table = 'tb_mobil'
