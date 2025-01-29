@@ -5,11 +5,11 @@ class KelolaMobil(models.Model):
 	merek = models.CharField(max_length=50)
 	kapasitas = models.SmallIntegerField()
 	PERIODE_CHOICES = [
-		('Per Hari','Per Hari'),
-		('Per Minggu','Per Minggu'),
-		('Per Bulan', 'Per Bulan'),
+		('Harian','Harian'),
+		('Mingguan','Mingguan'),
+		('Bulanan','Bulanan'),
 	]
-	durasi = models.CharField(max_length=10, choices=PERIODE_CHOICES, default='Per Hari')
+	durasi = models.CharField(max_length=10, choices=PERIODE_CHOICES, default='Harian')
 	harga = models.IntegerField()
 
 	class Meta:

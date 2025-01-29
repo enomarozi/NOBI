@@ -1,6 +1,7 @@
 from django import forms
+from .models import KelolaMobil
 
-class CustomFormMobil(forms.Form):
+class CustomFormMobil(forms.ModelForm):
 	merek = forms.CharField(label="Merek Mobil", max_length=30, widget=forms.TextInput(attrs={"class":"form-control"}))
 	kapasitas = forms.IntegerField(label="Kapasitas", min_value=1, max_value=10, widget=forms.NumberInput(attrs={"class":"form-control"}))
 	durasi = forms.ChoiceField(label="Durasi",
@@ -11,3 +12,7 @@ class CustomFormMobil(forms.Form):
 		],
 		widget=forms.Select(attrs={"class":"form-control"}))
 	harga = forms.CharField(label="Harga", widget=forms.TextInput(attrs={"class":"form-control"}))
+
+	class Meta:
+		model = KelolaMobil
+		fields = ["merek","kapasitas","durasi","harga"]
