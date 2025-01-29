@@ -5,32 +5,53 @@
     .size-profile{
       width: 100%;
     }
+    .form-control{
+      background-color:transparent;
+    }
   </style>
   <section class="section">
     <div class="section-header">
       <h1>Profile</h1>
     </div>
     <div class='size-profile'>
-      <div class="mb-3">
-        <label for="firstname" class="form-label">Firstname</label>
-        <input type="email" class="form-control" id="firstname" value="{{ user.first_name }}" readonly>
-      </div>
-      <div class="mb-3">
-        <label for="lastname" class="form-label">Lastname</label>
-        <input type="text" class="form-control" id="lastname" value="{{ user.last_name }}" readonly>
-      </div>
-      <div class="mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" class="form-control" id="username" value="{{ user.username }}" readonly>
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" class="form-control" id="email" value="{{ user.email }}" readonly>
-      </div>
-      <div class="mb-3">
-        <label for="role" class="form-label">Role</label>
-        <input type="text" class="form-control" id="role" value="{{ user.is_superuser }}" readonly>
+      <form method="POST" action="{% url 'profile' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="firstname" class="form-label">Firstname</label>
+          <input type="text" class="form-control" id="firstname" value="{{ user.first_name }}" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="lastname" class="form-label">Lastname</label>
+          <input type="text" class="form-control" id="lastname" value="{{ user.last_name }}" readonly>
+        </div>
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" value="{{ user.username }}" readonly required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" value="{{ user.email }}" readonly required>
+        </div>
+        <div class="mb-3">
+          <label for="role" class="form-label">Role</label>
+          <input type="text" class="form-control" id="role" value="{{ user.is_superuser }}" readonly>
+        </div>
+        <div class="justify-content-between">
+          <button class='btn btn-secondary' type="submit" id='save'>Save</button>
+          <a class='btn btn-success' onclick='buttonedit()'>Edit</a>
+      </form>
       </div>
     </div>
   </section>
+  <script type="text/javascript">
+    function buttonedit(){
+      document.getElementById("firstname").removeAttribute("readonly");
+      document.getElementById("lastname").removeAttribute("readonly");
+      document.getElementById("username").removeAttribute("readonly");
+      document.getElementById("email").removeAttribute("readonly");
+      document.getElementById("role").removeAttribute("readonly");
+      document.getElementById("save").classList.remove("btn-secondary");
+      document.getElementById("save").classList.add("btn-primary");
+    }
+  </script>
 {% include 'admin/components/footer.html' %}

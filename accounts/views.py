@@ -62,6 +62,8 @@ def profile(request):
 	if request.user.is_authenticated:
 		auth = request.user.username
 		user = User.objects.get(username=auth)
+		if request.method == "POST":
+			print(123)
 		return render(request, 'account/profile.html',{'user':user})
 	return HttpResponseRedirect(reverse('signin'))
 
