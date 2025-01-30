@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.db import connection
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib import messages
@@ -50,7 +50,7 @@ def signup(request):
 					messages.success(request, "Pendaftaran Berhasil, Silakan Coba Masuk.")
 					return HttpResponseRedirect(reverse('dashboard'))
 				else:
-					message.error(request, "Pendaftaran Gagal", "Password Tidak Sama dengan Konfirmasi Password.")
+					messages.error(request, "Pendaftaran Gagal", "Password Tidak Sama dengan Konfirmasi Password.")
 			else:
 				messages.error(request, "Pendaftaran Gagal, Panjang Password minimal 8 Karakter.")
 		else:
@@ -74,8 +74,32 @@ def profile(request):
 	return HttpResponseRedirect(reverse('signin'))
 
 def setting(request):
-	return render(request, 'account/setting.html')
-	
+	if request.user.is_authenticated:
+		if request.method == "POST":
+			password_sekarang = request.POST.get('password_sekarang')
+			password_baru1 = request.POST.get('password_baru1')
+			password_baru2 = request.POST.get('password_baru2')
+			user = request.user
+			if user.check_password(password_sekarang):
+				if len(password_baru1) >= 8 and len(password_baru2) >= 8:
+					if password_baru1 == password_baru2:
+						if password_sekarang != password_baru2:
+							user.set_password(password_baru2)
+							user.save()
+							update_session_auth_hash(request, user)
+							messages.success(request, "Ganti Password Berhasil.")
+							return HttpResponseRedirect(reverse('setting'))
+						else:
+							messages.error(request, "Ganti Password Gagal, Password Baru Anda Sama Dengan Sebelumnya.")
+					else:
+						messages.error(request, "Ganti Password Gagal, Password Baru dan Konfirmasi Password Tidak Sama.")
+				else:
+					messages.error(request, "Ganti Password Gagal, Panjang Password minimal 8 Karakter.")
+			else:
+				messages.error(request, "Ganti Password Gagal, Password Lama Salah.")
+		return render(request,'account/setting.html')
+	return HttpResponseRedirect(reverse('signin'))
+
 def signout(request):
 	if request.user.is_authenticated:
 		logout(request)

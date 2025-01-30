@@ -1,4 +1,24 @@
 {% load static %}
+    <style type="text/css">
+      .messages{
+        margin-top: 20px;
+      }
+    </style>
+    {% if messages %}
+      <div class="messages">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger text-center">
+              {{ message }}
+            </div>
+            {% else %}
+            <div class="alert alert-success text-center">
+              {{ message }}
+            </div>
+            {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
     </div>
     <footer class="main-footer">
       <div class="footer-left" id=copyright>

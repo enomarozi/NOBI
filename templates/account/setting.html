@@ -1,4 +1,33 @@
 {% load static %}
 {% include 'admin/components/header.html' %}
   {% include 'admin/components/sidebar.html' %}
+  <style type="text/css">
+    .size-setting{
+      width: 100%;
+    }
+  </style>
+  <section class="section">
+    <div class="section-header">
+      <h1>Change Password</h1>
+    </div>
+    <div class='size-setting'>
+      <form method="POST" action="{% url 'setting' %}">
+        {% csrf_token %}
+        <input type="hidden" name="id" value="{{ user.id }}">
+        <div class="mb-3">
+          <label for="password_sekarang" class="form-label">Password Sekarang</label>
+          <input type="password" class="form-control" name='password_sekarang' required>
+        </div>
+        <div class="mb-3">
+          <label for="password_baru1" class="form-label">Password Baru</label>
+          <input type="password" class="form-control" name='password_baru1' required>
+        </div>
+        <div class="mb-3">
+          <label for="password_baru2" class="form-label">Konfirmasi Password Baru</label>
+          <input type="password" class="form-control" name='password_baru2' required>
+        </div>
+        <button class='btn btn-primary' type="submit" id='save'>Update</button>
+      </form>
+    </div>
+  </section>
 {% include 'admin/components/footer.html' %}
