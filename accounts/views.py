@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.db import connection
@@ -63,7 +63,13 @@ def profile(request):
 		auth = request.user.username
 		user = User.objects.get(username=auth)
 		if request.method == "POST":
-			print(123)
+			user = get_object_or_404(User, id=request.POST.get('id'))
+			user.first_name = request.POST.get('firstname')
+			user.last_name = request.POST.get('lastname')
+			user.username = request.POST.get('username')
+			user.email = request.POST.get('email')
+			user.is_superuser = request.POST.get('is_superuser')
+			user.save()
 		return render(request, 'account/profile.html',{'user':user})
 	return HttpResponseRedirect(reverse('signin'))
 

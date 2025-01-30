@@ -18,3 +18,14 @@ class CustomSignupForm(forms.ModelForm):
 	class Meta:
 		model = User
 		fields = ["username","email","password1","password2"]
+
+class CustomProfileForm(forms.ModelForm):
+	firstname = forms.CharField(label="Firstname", max_length=20, widget=forms.TextInput(attrs={"class":"form-control"}))
+	lastname = forms.CharField(label="Lastname", max_length=20, widget=forms.TextInput(attrs={"class":"form-control"}))
+	username = forms.CharField(label="Username", max_length=30, widget=forms.TextInput(attrs={"class":"form-control"}))
+	email = forms.EmailField(label="Email", max_length=40, widget=forms.EmailInput(attrs={"class":"form-control"}))
+	is_superuser = forms.CharField(label="Is Superuser", max_length=15, widget=forms.TextInput(attrs={"class":"form-control"}))
+
+	class Meta:
+		model = User
+		fields = ["firstname","lastname","username","email","is_superuser"]
