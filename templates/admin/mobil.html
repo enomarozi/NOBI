@@ -25,6 +25,11 @@
         text-decoration: none;
         cursor: pointer;
     }
+    .img-thumbnail {
+        max-width: 200px;  
+        max-height: 200px;
+        object-fit: cover;
+    }
   </style>
   <section class="section">
       <link rel="stylesheet" href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.min.css">
@@ -44,6 +49,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Foto</th>
                         <th>Merek</th>
                         <th>Kapasitas</th>
                         <th>Durasi</th>
@@ -71,6 +77,12 @@
               noCell.textContent += autoIncrement;
               row.appendChild(noCell);
               autoIncrement++;
+
+              const filenameCell = document.createElement('td');
+              filenameCell.innerHTML = `
+                <img src='/uploads/${menu.filename}' class='img-thumbnail img-responsive'>
+              `
+              row.appendChild(filenameCell);
 
               const merekCell = document.createElement('td');
               merekCell.textContent = menu.merek;
@@ -110,7 +122,7 @@
                 <span class="close" style="cursor: pointer;">&times;</span>
               </div>
               <div class="modal-body">
-                <form method="POST" action="{% url 'mobil' %}">
+                <form method="POST" action="{% url 'mobil' %}" enctype="multipart/form-data">
                   {% csrf_token %}
                     <div class="mb-1">
                       <input type="hidden" id='id_' name="id" value="">

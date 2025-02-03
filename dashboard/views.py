@@ -14,6 +14,5 @@ def dashboard(request):
 			'mobil':mobil_count,
 			'layanan':layanan_count,
 		}
-		print(context)
 		return render(request, 'admin/dashboard.html',context)
 	return HttpResponseRedirect(reverse('signin'))

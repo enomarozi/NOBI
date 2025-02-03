@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'dashboard',
     'mobil',
     'layanan',
+    'index',
 ]
 
 MIDDLEWARE = [
@@ -84,7 +85,7 @@ WSGI_APPLICATION = 'nobi.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'DB_nobi',
+        'NAME': 'db_nobi',
         'USER':'root',
         'PASSWORD':'password',
         'HOST':'localhost',
@@ -126,7 +127,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
-MEDIA_URL = 'uploads/'
+MEDIA_URL = '/uploads/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'uploads')
 
 STATIC_URL = '/static/'

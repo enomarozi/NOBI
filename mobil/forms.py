@@ -1,7 +1,15 @@
 from django import forms
 from .models import KelolaMobil
+from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
+
+def validate_file_size(value):
+	limit = 10 * 1024 * 1024
+	if value.size > limit:
+		raise ValidationError("File terlalu besar. Maksimal 10MB.")
 
 class CustomFormMobil(forms.ModelForm):
+	filename = forms.FileField(required=True, widget=forms.ClearableFileInput(attrs={'class': 'form-control'}),validators=[ FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg', 'bmp']), validate_file_size])
 	merek = forms.CharField(label="Merek Mobil", max_length=30, widget=forms.TextInput(attrs={"class":"form-control"}))
 	kapasitas = forms.IntegerField(label="Kapasitas", min_value=1, max_value=10, widget=forms.NumberInput(attrs={"class":"form-control"}))
 	durasi = forms.ChoiceField(label="Durasi",
@@ -15,4 +23,4 @@ class CustomFormMobil(forms.ModelForm):
 
 	class Meta:
 		model = KelolaMobil
-		fields = ["merek","kapasitas","durasi","harga"]
+		fields = ["filename","merek","kapasitas","durasi","harga"]
