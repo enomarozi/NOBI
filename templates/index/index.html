@@ -132,19 +132,31 @@
       </div><!-- End Section Title -->
 
       <div class="container">
-        <div class="row gy-4">
+        <div class="row">
           {% for mobil in mobil_list %}
-          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
-              <div class="service-item item-cyan position-relative">
-                  <div class="icon">
-                      <!-- Pastikan bahwa 'mobil.5' adalah nama file gambar atau path relatif -->
-                      <img src="/uploads/{{ mobil.5 }}" class="img-responsive" style="object-fit: cover; height: 100px; width: 1000px;">
+          <div class="col-lg-3 col-md-4" data-aos="fade-up" data-aos-delay="100">
+              <div class="service-item item-cyan position-relative h-100 d-flex flex-column ">
+                  <div class="icon mb-3" style="height: 150px;">
+                      <img src="/uploads/{{ mobil.5 }}" class="img-fluid" style="object-fit: cover; height: 100%; width: 100%;">
                   </div>
-                  <a href="service-details.html" class="stretched-link">
-                      <!-- Misalnya, 'mobil.2' adalah nama mobil atau merek -->
+                  <br>
+                  <a href="service-details.html" class="stretched-link mb-2">
                       <h3>{{ mobil.1 }}</h3>
                   </a>
-                  <p>Provident nihil minus qui consequatur non omnis maiores. Eos accusantium minus dolores iure perferendis tempore et consequatur.</p>
+                  
+                  <div class="row">
+                    <div class="col-6">
+                      <p><strong>Durasi : {{ mobil.2 }}</strong></p>
+                    </div>
+                    <div class="col-6">
+                      <p><strong>Kapasitas : {{ mobil.3 }}</strong></p>
+                    </div>
+                  </div>
+
+                  <p><strong>Harga : Rp{{ mobil.4 }}</strong></p>
+                  <a href="https://wa.me/082288400386" target="_blank" class="btn btn-success mt-auto w-100">
+                    WhatsApp: 082288400386
+                  </a>
               </div>
           </div>
           {% endfor %}
