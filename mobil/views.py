@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
+from django.contrib import messages
 from .forms import CustomFormMobil
 from .models import KelolaMobil
 import os
@@ -12,6 +13,7 @@ def mobil(request):
 			id_mobil = get_object_or_404(KelolaMobil, id=request.POST.get('id'))
 			os.system("rm uploads/"+id_mobil.filename)
 			id_mobil.delete()
+			messages.success(request,"Hapus Record Berhasil.")
 
 		else:
 			if request.POST.get('action') == "Tambah":
@@ -25,6 +27,7 @@ def mobil(request):
 					harga = form.cleaned_data.get("harga")
 					addCar = KelolaMobil(filename=name, merek=merek, kapasitas=kapasitas, durasi=durasi, harga=harga)
 					addCar.save()
+					messages.success(request,"Tambah Record Berhasil.")
 			elif request.POST.get('action') == "Edit":
 				id_mobil = get_object_or_404(KelolaMobil, id=request.POST.get('id'))
 				form = CustomFormMobil(data=request.POST, instance=id_mobil, files=request.FILES)
@@ -33,6 +36,7 @@ def mobil(request):
 					fs = FileSystemStorage()
 					name = fs.save(filename.name, filename)
 					form.save()	
+					messages.success(request,"Edit Record Berhasil.")
 
 	return render(request, 'admin/mobil.html', {"form":form})
 
