@@ -73,12 +73,25 @@
             </div>
         </form>
     </div>
+    <style type="text/css">
+      .messages{
+        margin-top: 20px;
+      }
+    </style>
     {% if messages %}
-            {% for message in messages %}
-                <div class='alert alert-danger custom-success'>
-                    {{ message }}
-                </div>
+      <div class="messages">
+        {% for message in messages %}
+            {% if message.tags == 'error' %}
+            <div class="alert alert-danger text-center">
+              {{ message }}
+            </div>
+            {% else %}
+            <div class="alert alert-success text-center">
+              {{ message }}
+            </div>
+            {% endif %}
         {% endfor %}
+      </div>
     {% endif %}
     <!-- Bootstrap 5.3.3 JS and Popper.js -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>

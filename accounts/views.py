@@ -23,7 +23,7 @@ def signin(request):
 				login(request, user)
 				return HttpResponseRedirect(reverse('dashboard'))
 		else:
-			messages.error(request, "SignIn Failed, Pastikan lagi Inputannya.")
+			messages.error(request, "SignIn Failed, Username or Password Is Incorrect.")
 	else:
 		form = CustomSigninForm()
 	context['form'] = form
