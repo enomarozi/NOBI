@@ -8,4 +8,5 @@ urlpatterns = [
     path('admin/',include('dashboard.urls')),
     path('admin/',include('mobil.urls')),
     path('admin/',include('layanan.urls')),
+    path('admin/',include('faq.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

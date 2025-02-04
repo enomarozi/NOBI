@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'mobil',
     'layanan',
     'index',
+    'faq',
 ]
 
 MIDDLEWARE = [

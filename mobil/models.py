@@ -10,7 +10,7 @@ class KelolaMobil(models.Model):
 		('Mingguan','Mingguan'),
 		('Bulanan','Bulanan'),
 	]
-	durasi = models.CharField(max_length=10, choices=PERIODE_CHOICES, default='Harian')
+	durasi = models.CharField(max_length=50, choices=PERIODE_CHOICES, default='Harian')
 	harga = models.IntegerField()
 
 	class Meta:
