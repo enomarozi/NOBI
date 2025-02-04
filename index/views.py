@@ -13,3 +13,14 @@ def index(request):
 		'layanan_list': result_layanan,
 	}
 	return render(request, 'index/index.html', context)
+
+def home_faq(request):
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT * FROM tb_faq")
+		result_faq = cursor.fetchall()
+
+	context = {
+		'faq_list': result_faq,
+	}
+
+	return render(request, 'index/faq.html', context)
